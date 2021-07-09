@@ -1,0 +1,30 @@
+version: "2"
+services:
+    db:
+        container_name: db
+        image: mariadb:latest
+        ports:
+            - "3306:3306"
+        environment:
+            MARIADB_DATABASE: test
+            MARIADB_USER: user
+            MARIADB_PASSWORD: test
+            MYSQL_ROOT_PASSWORD: test
+        volumes:
+            - './db_vol:/var/lib/mysql'
+            - './db_conf:/etc/mysql' # nothing here atm
+        networks:
+            - default
+    phpmyadmin:
+        container_name: admin
+        image: phpmyadmin:latest
+        links:
+            - db
+        ports:
+            - 8000:80
+        environment:
+            MYSQL_USER: user
+            MYSQL_PASSWORD: test
+            MYSQL_ROOT_PASSWORD: test
+        networks:
+            - default
